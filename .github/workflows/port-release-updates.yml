@@ -207,9 +207,9 @@ jobs:
           - [x] squashed and [minimized your commits](https://guide.macports.org/#project.github)?
           - [ ] checked for other open [pull requests](https://github.com/macports/macports-ports/pulls) for the same change?
           - [ ] referenced an existing Trac ticket, if applicable?
-          - [x] checked the Portfile with `port lint --nitpick`?
-          - [ ] tried existing tests with `sudo port test`?
-          - [x] tried a full install with `sudo port -vst install`?
+          - [x] checked the Portfile with \`port lint --nitpick\`?
+          - [ ] tried existing tests with \`port test\`?
+          - [x] tried a full install with \`port -v install\`?
           - [ ] tested basic functionality of all binary files?
           EOF
 
