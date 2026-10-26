@@ -72,6 +72,10 @@ jobs:
           prefix=/opt/local
           printf 'file://%s [nosync]\nrsync://rsync.macports.org/macports/release/tarballs/ports.tar\n' "$PORTS_ROOT" \
             | sudo tee "$prefix/etc/macports/sources.conf" >/dev/null
+          # MacPorts drops privileges to _macports while reading the local source.
+          # GitHub's runner workspace is private by default, so expose the checkout read-only.
+          sudo find "$PORTS_ROOT" -type d -exec chmod a+rx {} +
+          sudo find "$PORTS_ROOT" -type f -exec chmod a+r {} +
           (cd "$PORTS_ROOT" && portindex)
           sudo port sync
 
