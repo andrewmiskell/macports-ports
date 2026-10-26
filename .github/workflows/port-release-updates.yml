@@ -213,21 +213,22 @@ jobs:
           - [ ] tested basic functionality of all binary files?
           EOF
 
+          pr_token="$GH_TOKEN"
           if [[ "$DESTINATION" == "upstream" ]]; then
             if [[ -z "$MACPORTS_PR_TOKEN" ]]; then
               echo "Set the MACPORTS_PR_TOKEN Actions secret before opening upstream PRs."
               exit 1
             fi
-            echo "$MACPORTS_PR_TOKEN" | gh auth login --with-token
+            pr_token="$MACPORTS_PR_TOKEN"
           fi
 
-          existing="$(gh pr list --repo "$target_repo" --head "andrewmiskell:$branch" --state open --json url --jq '.[0].url // empty')"
+          existing="$(GH_TOKEN="$pr_token" gh pr list --repo "$target_repo" --head "andrewmiskell:$branch" --state open --json url --jq '.[0].url // empty')"
           if [[ -n "$existing" ]]; then
             echo "An open PR already exists: $existing"
             exit 0
           fi
 
-          gh pr create \
+          GH_TOKEN="$pr_token" gh pr create \
             --repo "$target_repo" \
             --base master \
             --head "andrewmiskell:$branch" \
