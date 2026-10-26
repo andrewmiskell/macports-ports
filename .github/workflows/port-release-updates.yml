@@ -69,7 +69,7 @@ jobs:
           PORTS_ROOT: ${{ github.workspace }}/ports
         run: |
           set -euo pipefail
-          prefix="$(port -q prefix)"
+          prefix=/opt/local
           printf 'file://%s [nosync]\nrsync://rsync.macports.org/macports/release/tarballs/ports.tar\n' "$PORTS_ROOT" \
             | sudo tee "$prefix/etc/macports/sources.conf" >/dev/null
           (cd "$PORTS_ROOT" && portindex)
