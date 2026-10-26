@@ -177,7 +177,7 @@ jobs:
 
           macos_version="$(sw_vers -productVersion)"
           architecture="$(uname -m)"
-          xcode_version="$(xcodebuild -version | head -n 1)"
+          xcode_version="$(xcodebuild -version | sed -n '1p')"
           body_file="$RUNNER_TEMP/macports-pr-body.md"
           cat > "$body_file" <<EOF
           #### Description
