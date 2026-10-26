@@ -70,8 +70,7 @@ jobs:
         run: |
           set -euo pipefail
           prefix=/opt/local
-          printf 'file://%s [nosync]\nrsync://rsync.macports.org/macports/release/tarballs/ports.tar\n' "$PORTS_ROOT" \\
-            > "$prefix/etc/macports/sources.conf"
+          printf 'file://%s [nosync]\n' "$PORTS_ROOT" >> "$prefix/etc/macports/sources.conf"
           (cd "$PORTS_ROOT" && portindex)
 
       - name: Set up Python 3.11 for seaport
