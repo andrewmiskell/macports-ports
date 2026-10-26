@@ -58,7 +58,9 @@ jobs:
           repository: macports/macports-ports
           ref: master
           path: ports
-          sparse-checkout: ${{ matrix.path }}
+          sparse-checkout: |
+            ${{ matrix.path }}
+            _resources/port1.0/livecheck
           persist-credentials: false
 
       - name: Install MacPorts
@@ -71,6 +73,7 @@ jobs:
           set -euo pipefail
           prefix=/opt/local
           printf 'file://%s [nosync]\n' "$PORTS_ROOT" >> "$prefix/etc/macports/sources.conf"
+          port sync
           (cd "$PORTS_ROOT" && portindex)
 
       - name: Set up Python 3.11 for seaport
