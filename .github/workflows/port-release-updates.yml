@@ -173,7 +173,11 @@ jobs:
           git -C ports commit -m "$PORT_NAME: update to $NEW_VERSION"
 
           git -C ports remote add personal-fork https://github.com/andrewmiskell/macports-ports.git
-          git -C ports push personal-fork "$branch"
+          if remote_sha="$(git -C ports ls-remote personal-fork "refs/heads/$branch" | awk 'NR == 1 { print $1 }')" && [[ -n "$remote_sha" ]]; then
+            git -C ports push --force-with-lease="refs/heads/$branch:$remote_sha" personal-fork "$branch"
+          else
+            git -C ports push personal-fork "$branch"
+          fi
 
           macos_version="$(sw_vers -productVersion)"
           architecture="$(uname -m)"
