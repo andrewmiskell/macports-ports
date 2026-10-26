@@ -2,7 +2,7 @@
 
 The `.github/workflows/port-release-updates.yml` workflow checks the ports listed in `.github/port-updates.json` once a week and on demand. Each port runs in its own macOS job.
 
-For a newer livecheck version, the workflow uses seaport to update the Portfile version, revision and distfile checksums. It then runs `port lint --nitpick` and a full source install with `sudo port -vst install`. A failed update, lint or install does not produce a PR.
+For a newer livecheck version, the workflow uses seaport to update the Portfile version, revision and distfile checksums. It then runs `port lint --nitpick` and a full install with `port -v install`. A failed update, lint or install does not produce a PR.
 
 ## Review-first behavior
 
