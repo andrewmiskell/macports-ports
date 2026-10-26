@@ -1,0 +1,219 @@
+name: MacPorts port release updates
+
+on:
+  schedule:
+    - cron: "0 13 * * 1"
+  workflow_dispatch:
+    inputs:
+      destination:
+        description: "Where to publish a successful update. Preview opens a draft PR in this fork."
+        type: choice
+        required: true
+        default: preview
+        options:
+          - preview
+          - upstream
+          - build-only
+      port:
+        description: "Port to check, or all configured ports"
+        type: string
+        required: true
+        default: all
+
+permissions:
+  contents: read
+
+concurrency:
+  group: macports-port-updates-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - name: Check out updater configuration
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Create port matrix
+        id: matrix
+        run: python3 .github/scripts/port-matrix.py "${{ inputs.port || 'all' }}"
+
+  update-and-build:
+    needs: prepare
+    runs-on: macos-15
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Check out upstream MacPorts port
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          repository: macports/macports-ports
+          ref: master
+          path: ports
+          sparse-checkout: ${{ matrix.path }}
+          persist-credentials: false
+
+      - name: Install MacPorts
+        uses: melusina-org/setup-macports@103eded5f10979e927bffcd6d0b86cbbdb2c3bb3 # v1
+
+      - name: Add the checked out port as a local MacPorts source
+        env:
+          PORTS_ROOT: ${{ github.workspace }}/ports
+        run: |
+          set -euo pipefail
+          prefix="$(port -q prefix)"
+          printf 'file://%s [nosync]\nrsync://rsync.macports.org/macports/release/tarballs/ports.tar\n' "$PORTS_ROOT" \
+            | sudo tee "$prefix/etc/macports/sources.conf" >/dev/null
+          (cd "$PORTS_ROOT" && portindex)
+          sudo port sync
+
+      - name: Install seaport
+        run: |
+          brew install pipx
+          pipx install seaport==0.10.1
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Update version and checksums
+        id: update
+        env:
+          PORT_NAME: ${{ matrix.name }}
+          PORT_PATH: ${{ matrix.path }}
+          NO_COLOR: "1"
+        run: |
+          set -euo pipefail
+          port_file="ports/$PORT_PATH/Portfile"
+          old_version="$(awk '$1 == "go.setup" { print $3; exit } $1 == "github.setup" { print $4; exit } $1 == "version" { print $2; exit }' "$port_file")"
+          log_file="$RUNNER_TEMP/seaport.log"
+
+          if seaport clip --write "$PORT_NAME" >"$log_file" 2>&1; then
+            cat "$log_file"
+          else
+            cat "$log_file"
+            if grep -q "is already up-to-date" "$log_file"; then
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              echo "$PORT_NAME has no new livecheck version."
+              exit 0
+            fi
+            exit 1
+          fi
+
+          new_version="$(awk '$1 == "go.setup" { print $3; exit } $1 == "github.setup" { print $4; exit } $1 == "version" { print $2; exit }' "$port_file")"
+          if [[ "$new_version" == "$old_version" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "old_version=$old_version" >> "$GITHUB_OUTPUT"
+          echo "new_version=$new_version" >> "$GITHUB_OUTPUT"
+
+      - name: Reindex updated Portfile
+        if: steps.update.outputs.changed == 'true'
+        working-directory: ports
+        run: portindex
+
+      - name: Lint updated port
+        if: steps.update.outputs.changed == 'true'
+        env:
+          PORT_NAME: ${{ matrix.name }}
+        run: sudo port lint --nitpick "$PORT_NAME"
+
+      - name: Build and install updated port from source
+        if: steps.update.outputs.changed == 'true'
+        env:
+          PORT_NAME: ${{ matrix.name }}
+        run: sudo port -vst install "$PORT_NAME"
+
+      - name: Push candidate branch to personal fork and open the selected PR
+        if: steps.update.outputs.changed == 'true'
+        env:
+          PORT_NAME: ${{ matrix.name }}
+          PORT_PATH: ${{ matrix.path }}
+          NEW_VERSION: ${{ steps.update.outputs.new_version }}
+          DESTINATION: ${{ inputs.destination || (vars.ENABLE_MACPORTS_UPSTREAM_PRS == 'true' && 'upstream' || 'build-only') }}
+          GH_TOKEN: ${{ github.token }}
+          MACPORTS_PR_TOKEN: ${{ secrets.MACPORTS_PR_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ "$DESTINATION" == "build-only" ]]; then
+            echo "Build passed; PR publishing is disabled."
+            exit 0
+          fi
+
+          case "$DESTINATION" in
+            preview) target_repo="andrewmiskell/macports-ports"; is_draft="--draft" ;;
+            upstream) target_repo="macports/macports-ports"; is_draft="" ;;
+            *) echo "Unknown destination: $DESTINATION"; exit 1 ;;
+          esac
+
+          branch="auto-update/$PORT_NAME-$NEW_VERSION"
+          gh auth setup-git
+          git -C ports config user.name "github-actions[bot]"
+          git -C ports config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C ports switch -c "$branch"
+          git -C ports add "$PORT_PATH/Portfile"
+          git -C ports commit -m "$PORT_NAME: update to $NEW_VERSION"
+
+          git -C ports remote add personal-fork https://github.com/andrewmiskell/macports-ports.git
+          git -C ports push personal-fork "$branch"
+
+          macos_version="$(sw_vers -productVersion)"
+          architecture="$(uname -m)"
+          xcode_version="$(xcodebuild -version | head -n 1)"
+          body_file="$RUNNER_TEMP/macports-pr-body.md"
+          cat > "$body_file" <<EOF
+          #### Description
+
+          Update $PORT_NAME to $NEW_VERSION.
+
+          ###### Type(s)
+
+          - [ ] bugfix
+          - [x] enhancement
+          - [ ] security fix
+
+          ###### Tested on
+
+          macOS $macos_version ($architecture)  
+          $xcode_version
+
+          ###### Verification
+
+          Have you
+
+          - [x] followed the [Commit Message Guidelines](https://trac.macports.org/wiki/CommitMessages)?
+          - [x] squashed and [minimized your commits](https://guide.macports.org/#project.github)?
+          - [ ] checked for other open [pull requests](https://github.com/macports/macports-ports/pulls) for the same change?
+          - [ ] referenced an existing Trac ticket, if applicable?
+          - [x] checked the Portfile with `port lint --nitpick`?
+          - [ ] tried existing tests with `sudo port test`?
+          - [x] tried a full install with `sudo port -vst install`?
+          - [ ] tested basic functionality of all binary files?
+          EOF
+
+          if [[ "$DESTINATION" == "upstream" ]]; then
+            if [[ -z "$MACPORTS_PR_TOKEN" ]]; then
+              echo "Set the MACPORTS_PR_TOKEN Actions secret before opening upstream PRs."
+              exit 1
+            fi
+            echo "$MACPORTS_PR_TOKEN" | gh auth login --with-token
+          fi
+
+          existing="$(gh pr list --repo "$target_repo" --head "andrewmiskell:$branch" --state open --json url --jq '.[0].url // empty')"
+          if [[ -n "$existing" ]]; then
+            echo "An open PR already exists: $existing"
+            exit 0
+          fi
+
+          gh pr create \
+            --repo "$target_repo" \
+            --base master \
+            --head "andrewmiskell:$branch" \
+            --title "$PORT_NAME: update to $NEW_VERSION" \
+            --body-file "$body_file" \
+            $is_draft
