@@ -20,8 +20,7 @@ Update aws-sso-cli to 2.3.4.
 
 ###### Tested on
 
-macOS 15 (arm64)  
-Xcode version: (reported by the runner)
+macOS 15.7.9 (arm64), GitHub Actions
 
 ###### Verification
 
@@ -33,7 +32,7 @@ Have you
 - [ ] referenced an existing Trac ticket, if applicable?
 - [x] checked the Portfile with `port lint --nitpick`?
 - [ ] tried existing tests with `sudo port test`?
-- [x] tried a full install with `sudo port -vst install`?
+- [x] tried a full install with `port -v install`?
 - [ ] tested basic functionality of all binary files?
 
-The PR is opened only after the updated port passes lint and a full source install on a macOS runner. Each port gets its own branch and PR.
+The PR is opened only after the updated port passes lint and a full source install on a macOS runner. The automation opens a draft preview PR in this fork after the build passes; upstream publication stays disabled until explicitly enabled.
