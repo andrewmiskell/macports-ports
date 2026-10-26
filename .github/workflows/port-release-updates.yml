@@ -72,7 +72,7 @@ jobs:
         run: |
           set -euo pipefail
           prefix=/opt/local
-          printf 'file://%s [nosync]\n' "$PORTS_ROOT" >> "$prefix/etc/macports/sources.conf"
+          printf 'file://%s [default] [nosync]\n' "$PORTS_ROOT" >> "$prefix/etc/macports/sources.conf"
           port sync
           (cd "$PORTS_ROOT" && portindex)
 
