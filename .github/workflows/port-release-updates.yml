@@ -1,6 +1,9 @@
 name: MacPorts port release updates
 
 on:
+  push:
+    branches:
+      - codex/macports-release-updater
   schedule:
     - cron: "0 13 * * 1"
   workflow_dispatch:
@@ -135,7 +138,7 @@ jobs:
           PORT_NAME: ${{ matrix.name }}
           PORT_PATH: ${{ matrix.path }}
           NEW_VERSION: ${{ steps.update.outputs.new_version }}
-          DESTINATION: ${{ inputs.destination || (vars.ENABLE_MACPORTS_UPSTREAM_PRS == 'true' && 'upstream' || 'build-only') }}
+          DESTINATION: ${{ github.event_name == 'workflow_dispatch' && inputs.destination || (github.event_name == 'push' && 'preview') || (vars.ENABLE_MACPORTS_UPSTREAM_PRS == 'true' && 'upstream' || 'build-only') }}
           GH_TOKEN: ${{ github.token }}
           MACPORTS_PR_TOKEN: ${{ secrets.MACPORTS_PR_TOKEN }}
         run: |
