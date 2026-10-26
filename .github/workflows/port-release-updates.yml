@@ -70,12 +70,8 @@ jobs:
         run: |
           set -euo pipefail
           prefix=/opt/local
-          printf 'file://%s [nosync]\nrsync://rsync.macports.org/macports/release/tarballs/ports.tar\n' "$PORTS_ROOT" \
-            | sudo tee "$prefix/etc/macports/sources.conf" >/dev/null
-          # MacPorts drops privileges to _macports while reading the local source.
-          # GitHub's runner workspace is private by default, so expose the checkout read-only.
-          sudo find "$PORTS_ROOT" -type d -exec chmod a+rx {} +
-          sudo find "$PORTS_ROOT" -type f -exec chmod a+r {} +
+          printf 'file://%s [nosync]\nrsync://rsync.macports.org/macports/release/tarballs/ports.tar\n' "$PORTS_ROOT" \\
+            > "$prefix/etc/macports/sources.conf"
           (cd "$PORTS_ROOT" && portindex)
 
       - name: Set up Python 3.11 for seaport
@@ -132,13 +128,13 @@ jobs:
         if: steps.update.outputs.changed == 'true'
         env:
           PORT_NAME: ${{ matrix.name }}
-        run: sudo port lint --nitpick "$PORT_NAME"
+        run: port lint --nitpick "$PORT_NAME"
 
       - name: Build and install updated port from source
         if: steps.update.outputs.changed == 'true'
         env:
           PORT_NAME: ${{ matrix.name }}
-        run: sudo port -vst install "$PORT_NAME"
+        run: port -vst install "$PORT_NAME"
 
       - name: Push candidate branch to personal fork and open the selected PR
         if: steps.update.outputs.changed == 'true'
