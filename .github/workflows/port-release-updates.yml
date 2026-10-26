@@ -72,7 +72,11 @@ jobs:
         run: |
           set -euo pipefail
           prefix=/opt/local
-          printf 'file://%s [default] [nosync]\n' "$PORTS_ROOT" >> "$prefix/etc/macports/sources.conf"
+          printf '\nmacportsuser %s\nmacportsgroup %s\n' "$(id -un)" "$(id -gn)" >> "$prefix/etc/macports/macports.conf"
+          cat > "$prefix/etc/macports/sources.conf" <<EOF
+          file://$PORTS_ROOT [nosync]
+          rsync://rsync.macports.org/macports/release/tarballs/ports.tar [default]
+          EOF
           port sync
           (cd "$PORTS_ROOT" && portindex)
 
