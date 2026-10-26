@@ -140,7 +140,7 @@ jobs:
         if: steps.update.outputs.changed == 'true'
         env:
           PORT_NAME: ${{ matrix.name }}
-        run: port -vt install "$PORT_NAME"
+        run: port -v install "$PORT_NAME"
 
       - name: Push candidate branch to personal fork and open the selected PR
         if: steps.update.outputs.changed == 'true'
