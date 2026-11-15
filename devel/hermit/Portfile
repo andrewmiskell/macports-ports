@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/cashapp/hermit 0.54.1 v
+go.setup            github.com/cashapp/hermit 0.56.0 v
 go.toolchain_min    1.26.0
 go.offline_build    no
 revision            0
@@ -24,9 +24,9 @@ license             Apache-2
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  39610d9718d9b03be1fed10abd0402f0530a689e \
-                    sha256  2121aabf57b62c9728f7f3319ad5cc6e4724be8c303b2302828d2bafd05f040e \
-                    size    1248424
+checksums           rmd160  220e03253ab2794c825a3f517474faf2eb1719a3 \
+                    sha256  0fd7beadf347693f24b843496a20f92ed465c98dff2673fa9d173a8a3ecde3ef \
+                    size    1264455
 
 # 0.52.3 replaced the Makefile with a Justfile, whose build recipe is a single
 # go build followed by a gzip. Build directly rather than depend on just.

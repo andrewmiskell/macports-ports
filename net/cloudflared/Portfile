@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/cloudflare/cloudflared 2026.10.3
-go.toolchain_min    1.27.3
+go.setup            github.com/cloudflare/cloudflared 2026.11.0
+go.toolchain_min    1.27.4
 revision            0
 categories          net security
 maintainers         {i0ntempest @i0ntempest} @cicku openmaintainer
@@ -16,9 +16,9 @@ long_description    Contains the command-line client for Cloudflare Tunnel, a tu
 
 homepage            https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/
 
-checksums           rmd160  70aff6d5ccbfaf35f73935f0f394123cdc1d087c \
-                    sha256  68d298c522aef45fe8412e0ccf8f21ff12a6ad768aa69cbc23e10eac688ac8c8 \
-                    size    651894
+checksums           rmd160  50fa51be84ec5c479b0cfd66a72bdd12e75289db \
+                    sha256  9913452304215e1e7b0ecd75b3e1ca400d5c8b64156e176c5e0aaaca4238c539 \
+                    size    662733
 
 go.offline_build    no
 

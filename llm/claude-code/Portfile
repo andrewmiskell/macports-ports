@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                claude-code
-version             2.1.310
+version             2.1.325
 revision            0
 
 categories          llm
@@ -22,18 +22,18 @@ homepage            https://claude.com/product/claude-code
 
 # https://code.claude.com/docs/en/setup
 # Operating Systems: macOS 13.0+
-platforms           {darwin >= 22}
+platforms           {darwin any >= 22}
 
 if {${configure.build_arch} eq "x86_64"} {
     set arch_classifier x64
-    checksums    rmd160  1e8f657265c03d640edc9d8bfbecd1df81927929 \
-                 sha256  28fdbed5a84ef7d4205b5751c7f021e79151c4e319c4a401e48fe6aae86bbb39 \
-                 size    285291472
+    checksums    rmd160  13ea080cc2014d203904acef7f2e118101b167b1 \
+                 sha256  af9760c59f947044e2a0d5072343de563f31efb68bd18ccee4f43c5240570de7 \
+                 size    362162560
 } elseif {${configure.build_arch} eq "arm64"} {
     set arch_classifier arm64
-    checksums    rmd160  4bf6b4ef11cc5f73897dc7c27405ee17542f9ff6 \
-                 sha256  ffb64331bc0ee1b69efb7c2c428bd3ab516bc31b75bf60886b356c97c1c25ffd \
-                 size    274068224
+    checksums    rmd160  4689af560196502e0bf7482c795b34b15924c9ae \
+                 sha256  84590fefe6338be9087f5814b61f9a54c5f21524163a4c127cb5a808e31009f2 \
+                 size    347406976
 } else {
     set arch_classifier unsupported_arch
     distfiles

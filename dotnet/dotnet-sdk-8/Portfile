@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                dotnet-sdk-8
-version             8.0.426
+version             8.0.428
 revision            0
 categories          dotnet devel
 license             MIT
@@ -26,16 +26,16 @@ switch ${build_arch} {
     x86_64 {
         set dotnet_rid osx-x64
         distname            dotnet-sdk-${version}-osx-x64
-        checksums           rmd160  e2620ca055e9cad3d54c4381bcf75680a4b08ea4 \
-                            sha256  db790f685bae9b89e53d55084ea959214a075ab575ce92fac661113c67623e08 \
-                            size    215121880
+        checksums           rmd160  6bc944482d1aa87160c0d87e81f51628da26de87 \
+                            sha256  6f6baf285598e2383a5dcd4e03f4559ba838e8b0bf1616ac1a776f66c026e871 \
+                            size    215163999
     }
     arm64 {
         set dotnet_rid osx-arm64
         distname            dotnet-sdk-${version}-osx-arm64
-        checksums           rmd160  74fab3abb5c2ad3513eb330a483b132b6b2a1c47 \
-                            sha256  c4e88383ff1ffcf9e80d91367a83690f77dff32a68c742fab6fa5644173875aa \
-                            size    209985820
+        checksums           rmd160  2f06878fe4bbb9437082edbde14a948b1136b812 \
+                            sha256  4ce04ab524f2e176506a7dbaf72020f5198af032a8cf685573de3fa9c2bf236b \
+                            size    210034414
     }
     default {
         known_fail yes
@@ -61,7 +61,7 @@ build {}
 
 destroot {
     set dotnet_home ${prefix}/share/dotnet
-    set dotnet_runtime_version 8.0.32
+    set dotnet_runtime_version 8.0.34
 
     # ASP.NET Core Targeting Pack
     set aspnet_target_dir /packs/Microsoft.AspNetCore.App.Ref

@@ -4,16 +4,16 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.28 5.30 5.32 5.34
-perl5.setup         Sereal-Decoder 5.011 ../../authors/id/Y/YV/YVES
+perl5.setup         Sereal-Decoder 7.002 ../../authors/id/Y/YV/YVES
 revision            0
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 description         Sereal::Decoder - Fast, compact, powerful binary deserialization
 long_description    {*}${description}
 
-checksums           rmd160  b2de59adb625ea54135e83ac3fa6819fbaab2927 \
-                    sha256  774ba27456bb9e0aa3414f16f6f02eecc57fd6fc45f35bbae1172504bb173118 \
-                    size    906938
+checksums           rmd160  964a14f9630428eb88cb117c127c7e4d87046e9e \
+                    sha256  c1864d8ae866e0828a1bb41b682c5154a706fc170e9177631ceec740b6a686a4 \
+                    size    1495928
 
 use_parallel_build  no
 

@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/twpayne/chezmoi 2.73.3 v
+go.setup            github.com/twpayne/chezmoi 2.74.1 v
 go.offline_build    no
 go.toolchain_min    1.26
 revision            0
@@ -21,9 +21,9 @@ license             MIT
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  fd63a40ea9aba9ae9ec34fb516843bfe99820bb9 \
-                    sha256  5bee6b243331b9c02a7f25ca1696bbde30cb3909c8bccb91108f2718931e4fc7 \
-                    size    2606901
+checksums           rmd160  b9a49457ad680774c1eb5d7c568e54e88f5c647d \
+                    sha256  818984475f981bb79d516f144386d0f4aeb03f035bca3c6d6287da2bdae61829 \
+                    size    2611201
 
 build.cmd           make
 build.pre_args-append \

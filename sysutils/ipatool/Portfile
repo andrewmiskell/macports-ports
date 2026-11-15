@@ -3,7 +3,7 @@
 PortSystem              1.0
 PortGroup               golang 1.0
 
-go.setup                github.com/majd/ipatool 2.7.0 v
+go.setup                github.com/majd/ipatool 2.8.1 v
 go.toolchain_min        1.25.0
 revision                0
 categories              sysutils
@@ -14,9 +14,9 @@ maintainers             {@TheRealKeto gmail.com:therealketo} openmaintainer
 description             CLI for searching and downloading iOS app packages from the App Store
 long_description        {*}${description}.
 
-checksums               rmd160  333dbb05b385f44e41de7afceeb28a7acf1f33fa \
-                        sha256  8f88d20bf971d6edbb8780cff8f76c1c565e9f352f21f6da0c6ac48003b3189d \
-                        size    882302
+checksums               rmd160  a932e8ea47819f19aa4264f7da60c0addd1fb1b3 \
+                        sha256  88704a28231ac0019016c1900edebc9dea0cf14de4e5bc90aa96fd594925bdc0 \
+                        size    6121674
 
 # Vendored libraries cause failure, fetch them at build time
 go.offline_build        no

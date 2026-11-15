@@ -3,14 +3,15 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/DNSControl/dnscontrol 5.7.0 v
+go.setup            github.com/DNSControl/dnscontrol 5.8.1 v
+go.package          github.com/DNSControl/dnscontrol/v5
 go.toolchain_min    1.27.3
 go.offline_build    no
 revision            0
 
-checksums           rmd160  c25baf9bf2c97ea55ab95ec4f8bd7fe81bc17e0d \
-                    sha256  4a76b675ba797cf9ee3200c33c0452fd74da429b93b32bd4a56e00307ca4d6ef \
-                    size    6090773
+checksums           rmd160  3705ecc298a456e2f2a4cbb6362d85a726199b1b \
+                    sha256  71d0a9e71487dce36ece540bba14920d9ea6fb4dea3d1873aac0eeb250e63757 \
+                    size    6103672
 
 homepage            https://dnscontrol.org
 
@@ -34,7 +35,7 @@ maintainers         nomaintainer
 
 
 build.args-append   -ldflags \"-s -w \
-                                -X ${go.package}/v5/pkg/version.version=v${version} \"
+                                -X ${go.package}/pkg/version.version=v${version} \"
 
 post-build {
     foreach shell {bash zsh} {

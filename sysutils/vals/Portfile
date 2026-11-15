@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/helmfile/vals 0.50.0 v
+go.setup            github.com/helmfile/vals 0.51.1 v
 go.offline_build    no
 go.toolchain_min    1.27.3
 revision            0
@@ -23,9 +23,9 @@ license             Apache-2
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  a3421ac5108ff1abfa158d289f01ffbdfe7460e6 \
-                    sha256  3fec3ba645270de7161a8d906b2135fb92e85f5ba36662e9a95bbdc303c76877 \
-                    size    193486
+checksums           rmd160  a2a47cc064307ab0bf029ab46e4559f1e1882f4a \
+                    sha256  d132c1e739d837f3e2321ca1d215915dfd6d78a6c853ed8fd0bb1d6495dc7069 \
+                    size    193971
 
 build.pre_args-append \
     -ldflags \" -X main.version=${github.tag_prefix}${version} \"

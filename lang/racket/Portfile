@@ -132,8 +132,8 @@ if { [variant_isset "x11"] } {
                     port:cairo \
                     port:fribidi \
                     port:gettext-runtime \
-                    port:glib2 \
-                    port:harfbuzz \
+                    path:lib/pkgconfig/glib-2.0.pc:glib2 \
+                    path:lib/pkgconfig/harfbuzz.pc:harfbuzz \
                     port:libedit \
                     port:libjpeg-turbo \
                     port:libpixman \
@@ -141,7 +141,7 @@ if { [variant_isset "x11"] } {
                     port:MMTabBarView \
                     port:mpfr \
                     port:ossp-uuid \
-                    port:pango \
+                    path:lib/pkgconfig/pango.pc:pango \
                     port:poppler
 
     configure.args-append \

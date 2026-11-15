@@ -4,16 +4,16 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.28 5.30 5.32 5.34
-perl5.setup         Sereal-Encoder 5.011 ../../authors/id/Y/YV/YVES
+perl5.setup         Sereal-Encoder 7.002 ../../authors/id/Y/YV/YVES
 revision            0
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 description         Sereal::Encoder - Fast, compact, powerful binary serialization
 long_description    {*}${description}
 
-checksums           rmd160  e91f4433710c4c8344cde4a789418eb26a461894 \
-                    sha256  a4d7e3bdc729803da4a1272e3c6d5ca52836784ba1cfe68b65c0806927074632 \
-                    size    900562
+checksums           rmd160  4c352ed91dfc4df0965c6d9050eaf1ad677b889e \
+                    sha256  40da0fd5ee0a46b24bcceaf7c9b10bb9e20791d4142f0d76ed1f9f81f07acefe \
+                    size    1456481
 
 use_parallel_build  no
 

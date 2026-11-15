@@ -4,15 +4,15 @@ PortSystem          1.0
 PortGroup           codeberg 1.0
 PortGroup           python 1.0
 
-codeberg.setup      mikf gallery-dl 1.32.17 v
+codeberg.setup      mikf gallery-dl 1.32.19 v
 
 categories          net
 maintainers         {sub-pop.net:link @subpop} openmaintainer
 revision            0
 
-checksums           rmd160  512ae3b04412b8d4a60e7f9bab60d326343dd02c \
-                    sha256  f48afb4c1ce7235e5bc83c585093da5b2557edf3776b0179b72260d8c961152d \
-                    size    1302257
+checksums           rmd160  4d9bf533de97488def19484e9515b1b2d4ac4819 \
+                    sha256  28583483c602878ac278be1e4cc469d925106ae7b38a801ddb1251ec5e5e940e \
+                    size    1309302
 
 description         command-line program to download image galleries and \
                     collections from several image hosting sites
