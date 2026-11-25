@@ -1,0 +1,35 @@
+name: Sync fork with upstream
+
+on:
+  schedule:
+    # Daily, ahead of the 13:00 UTC release updater.
+    - cron: "00 11 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-fork
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: github.repository != 'macports/macports-ports'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merge macports/macports-ports master into this fork
+        env:
+          # Use a personal access token with the `workflow` scope (secret
+          # FORK_SYNC_TOKEN) so merges that touch upstream's .github/workflows
+          # succeed. The default token is enough for everything else.
+          GH_TOKEN: ${{ secrets.FORK_SYNC_TOKEN || github.token }}
+        run: |
+          set -euo pipefail
+          if result="$(gh api -X POST "repos/$GITHUB_REPOSITORY/merge-upstream" -f branch=master 2>&1)"; then
+            echo "$result"
+          else
+            echo "$result"
+            echo "::error::Could not sync master. A merge conflict, or an upstream change under .github/workflows with a token lacking the workflow scope, are the usual causes."
+            exit 1
+          fi
