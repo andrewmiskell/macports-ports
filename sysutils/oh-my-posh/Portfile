@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/JanDeDobbeleer/oh-my-posh 33.0.0 v
+go.setup            github.com/JanDeDobbeleer/oh-my-posh 33.4.0 v
 go.offline_build    no
 go.toolchain_min    1.27.0
 revision            0
@@ -20,9 +20,9 @@ maintainers         {gmail.com:herby.gillot @herbygillot} \
                     {duck.com:ihj3s1wy @PinoTucana} \
                     openmaintainer
 
-checksums           rmd160  8d283caebac7807317bbb8380f4d8fb953e20a17 \
-                    sha256  0c1487ee7f04d3ad7641463334622c2e2de98439d134702380f2baff2bc616f7 \
-                    size    7657313
+checksums           rmd160  7d1c0b17a8306c2a4eb4080962bc43a2aceaf712 \
+                    sha256  6c52e050de22b95c888d4305f8161ff690ec593ef7e9a82fc3dcbd99d4c09da3 \
+                    size    7680924
 
 build.dir           ${worksrcpath}/src
 

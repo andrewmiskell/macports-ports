@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/patriceckhart/zot 0.4.83 v
+go.setup            github.com/patriceckhart/zot 0.4.88 v
 revision            0
 
 homepage            https://zot.sh
@@ -26,9 +26,9 @@ license             MIT
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  e68e1209f80d41998177c4c524a7837edad05164 \
-                    sha256  917ec6e159db00a21845828d7d7bbad05b445b1f63f8b3cf4bfea2418b6562c5 \
-                    size    7866974
+checksums           rmd160  55617cd773e7374f60f06918b84d2413b8c6a97d \
+                    sha256  52bff4913438773991854aaddf62991e16c99b02cfcdbdba8d00a1af51bd2a88 \
+                    size    7873619
 
 go.offline_build    no
 go.toolchain_min    1.25.0

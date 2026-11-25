@@ -6,7 +6,7 @@ PortGroup           active_variants 1.1
 PortGroup           app 1.1
 PortGroup           qt6 1.0
 
-github.setup        XiaoYouChR Ghost-Downloader-3 4.5.8 v
+github.setup        XiaoYouChR Ghost-Downloader-3 4.6 v
 github.tarball_from archive
 revision            0
 name                [string tolower [join [lrange [split ${github.project} -] 0 1] -]]
@@ -20,9 +20,9 @@ long_description    ${name} aims to be [string tolower ${description}]. It emplo
                     and intelligent load balancing, supports HTTP(S), QUIC, BitTorrent, eD2k, M3U8,\
                     common video sites, media sniffing, browser integration, and more.
 
-checksums           rmd160  39cd1927fb1f5b4fd9cd39179d99e67629393362 \
-                    sha256  8261e5bee6244da5e5c4c83cf989b05845d74fa90e8e5c63485028548d548a66 \
-                    size    11774867
+checksums           rmd160  5ddb9d6512500483f8c0907fef930d7f1bd62287 \
+                    sha256  8ed53a67edf6e691d06f2e711d3dc517424feceed13df7fb7902ee9d4e6df2ce \
+                    size    12669971
 
 set python_version  314
 set python_branch   [string index ${python_version} 0].[string range ${python_version} 1 end]
@@ -40,7 +40,7 @@ depends_lib-append  port:libtorrent-rasterbar \
                     port:py${python_version}-wreq \
                     port:py${python_version}-websockets \
                     port:py${python_version}-pyside6 \
-                    port:py${python_version}-pyside6-fluent-widgets \
+                    port:py${python_version}-pyside6-fluent-widgets-xychr \
                     port:py${python_version}-qrcode \
                     port:py${python_version}-uvloop \
                     port:py${python_version}-aioftp \
@@ -61,8 +61,6 @@ patchfiles-append   patch-928.diff
 patchfiles-append   patch-934.diff
 # https://github.com/XiaoYouChR/Ghost-Downloader-3/pull/933 - bilibili multi-file task naming
 patchfiles-append   patch-933.diff
-# https://github.com/XiaoYouChR/Ghost-Downloader-3/pull/1098 - i18n updates
-patchfiles-append   patch-1098.diff
 patch.args          -p1
 
 post-patch {
@@ -75,7 +73,7 @@ post-patch {
 }
 
 # Project does not have a typical Python project structure (pyproject.toml not usable for installation).
-# deploy.py compiles standalone bundle and packs everything with nuitka into one app bundle - 
+# scripts/deploy.py compiles standalone bundle and packs everything with nuitka into one app bundle - 
 # avoid that, make our own bundle. We compile the main script and the `app` package only.
 use_configure       no
 post-configure {
@@ -122,7 +120,7 @@ destroot {
     # --include-data-files ignored in non-standalone build, copy resource file manually
     xinstall -d ${dest_app_bin_dir}/app/assets/
     xinstall -m 0644 ${worksrcpath}/app/assets/resources.rcc ${dest_app_bin_dir}/app/assets/
-    # see EXCLUDED_PACKS in deploy.py
+    # see EXCLUDED_PACKS in scripts/deploy.py
     set feature_pack_blacklist {jack_yao}
     foreach pack ${feature_pack_blacklist} {
         delete ${dest_app_bin_dir}/features/${pack}

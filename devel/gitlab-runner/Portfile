@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            gitlab.com/gitlab-org/gitlab-runner 19.5.3 v
+go.setup            gitlab.com/gitlab-org/gitlab-runner 19.6.1 v
 revision            0
 
 homepage            https://docs.gitlab.com/runner/
@@ -22,9 +22,9 @@ license             MIT
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  fafd2d63371985e35b339b4e525fced63ca06a51 \
-                    sha256  7cad634e41f54e0e0580ee2bb6082ce1ff7c38fd94be6e06964c0734329d4e95 \
-                    size    3105680
+checksums           rmd160  28d84446ba9bbf69a3188c87ce763bb3178c0584 \
+                    sha256  9786f9ffe92b30adf280f42ab9fc96ae0f1276e75e1270b938245bcfc66e13be \
+                    size    3269441
 
 # Allow Go to fetch deps at build time
 go.offline_build no

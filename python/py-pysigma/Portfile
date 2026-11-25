@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-pysigma
-version             2.1.0
+version             2.1.2
 revision            0
 
 license             LGPL-2.1
@@ -16,9 +16,9 @@ homepage            https://github.com/SigmaHQ/pySigma
 supported_archs     noarch
 platforms           {darwin any}
 
-checksums           rmd160  7c485be95c4251380b02c0668443895b5d875e80 \
-                    sha256  b800923786ace5bc90bd35f488d81b7a2b86e04856f213f5de52c05f876901d1 \
-                    size    163103
+checksums           rmd160  29d089bca23a1cf24334559509f2d56639531336 \
+                    sha256  2c3af666d331d9ae01f3d4c646deba150d12655b9df75a7024b21f5044be44d1 \
+                    size    165557
 
 python.versions     311 312 313 314 315
 
