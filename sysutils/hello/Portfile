@@ -1,0 +1,67 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem              1.0
+PortGroup               gnu_info 1.0
+
+name                    hello
+version                 2.12.3
+revision                0
+
+categories              sysutils
+license                 GPL-3+
+homepage                https://www.gnu.org/software/hello
+maintainers             {sethm.id.au:dev @McDaMastR} \
+                        openmaintainer
+
+description             Utility for saying hello
+long_description        The GNU hello program produces a familiar, friendly \
+                        greeting.  Yes, this is another implementation of the \
+                        classic program that prints \“Hello, world!\” when you \
+                        run it.  However, unlike the minimal version often \
+                        seen, GNU Hello processes its argument list to modify \
+                        its behavior, supports greetings in many languages, \
+                        and so on.
+
+installs_libs           no
+# ${prefix}/bin/hello
+conflicts               mbedtls mbedtls3
+
+depends_build-append    port:gettext
+depends_lib-append      port:gettext-runtime \
+                        port:libiconv
+
+master_sites            gnu
+
+checksums               rmd160  948d132ded19a695f97780e5a546e461e6b50e22 \
+                        sha256  0d5f60154382fee10b114a1c34e785d8b1f492073ae2d3a6f7b147687b366aa0 \
+                        size    1189208
+
+configure.args          --disable-silent-rules \
+                        --with-packager=MacPorts
+
+configure.checks.implicit_int \
+                        no
+# <https://trac.macports.org/wiki/WimplicitFunctionDeclaration>
+configure.checks.implicit_function_declaration.whitelist-append \
+                        __GNUC_PREREQ \
+                        __fpending \
+                        MIN \
+                        alignof \
+                        strchr \
+                        unreachable
+
+test.run                yes
+test.target             check
+
+post-destroot {
+    set destdocdir  ${destroot}${prefix}/share/doc/${name}
+
+    xinstall -d ${destdocdir}
+    xinstall -W ${worksrcpath} -m 644 \
+        AUTHORS \
+        COPYING \
+        NEWS \
+        README \
+        THANKS \
+        ${destdocdir}
+}
